@@ -1,4 +1,26 @@
 -- PremiumOnly
+local url = "https://raw.githubusercontent.com/username/repo-name/main/check_status.txt"
+
+local function checkStatus()
+    local success, response = pcall(function()
+        return game:HttpGet(url)
+    end)
+    
+    if success then
+        if response:lower():find("inactive") then
+            warn("تم تعطيل هذا السكربت من قبل المطور.")
+            script:Destroy() -- إيقاف السكربت
+        end
+    else
+        warn("تعذر التحقق من الحالة. يرجى المحاولة لاحقًا.")
+    end
+end
+
+-- التحقق كل دقيقة
+while true do
+    checkStatus()
+    wait(60) -- الانتظار دقيقة
+end
 
 local success, err = pcall(function()
     local function safeDestroy(obj)
